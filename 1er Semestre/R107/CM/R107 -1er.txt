@@ -1,0 +1,48 @@
+#R107
+---
+##python
+---
+Python fonctionne par interpreteur grâce a des fichiers textes nommé **Script**  
+A mettre dans un fichier python : "#!/usr/bin/python3"   
+Hexadecimal: **HEX()**   
+Octodecimal: **OCT()**   
+Binaire: **Bin()**   
+abs()
+().conjugate
+
+nombre entier: **int()**  
+nombre reel: **float()**  
+nombre complex: **complex()**  
+chaine de caractère: **Str()**
+
+addition: **+**  
+soustraction: **-**  
+multiplication: *  
+puissance: **  
+multiplication de matrice: **@**  
+division: **/**  
+division entière: **//**  
+reste de la division ou modulo: **%**  
+peut mettre un **=** en plus pour une affectation
+
+egalité: **==**  
+différence: **!=**  
+superieur a: **>** ou superieur ou egale: **=>**  
+inferieur a: **<** ou inferieur ou egale: **=<**
+
+decalage a  gauche: **<<**  
+decalage a  doite: **>>**  
+addition de bit: **&**  
+ou bit: **|**  
+XOR bits a bits: **^**  
+
+type de variable: **type()**  
+
+("toto").**replace**("0","i")  
+.**count**("")  
+.**capitalize**()  
+.**title**()  
+.**upper**()  
+.**format**()  
+
+x=**input**("")
