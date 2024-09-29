@@ -20,5 +20,6 @@ jobs:
       run: |
         echo "Les fichiers modifiés sont :"
         for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-          echo "$file"
-        done
+          dir=$(dirname "$file")
+          echo "$dir"
+        done | sort -u
