@@ -38,7 +38,7 @@ jobs:
             echo "Traitement du fichier: $file"
             # Ajoutez ici le code pour traiter les fichiers non-README
             # Par exemple :
-            # echo "Cette ligne a été ajoutée par GitHub Actions" >> "$file"
+            echo "Cette ligne a été ajoutée par GitHub Actions" >> "$file"
           fi
         done <<< "${{ steps.changed-files.outputs.all_changed_files }}"
 
