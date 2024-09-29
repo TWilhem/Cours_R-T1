@@ -22,11 +22,13 @@ jobs:
         non_readme_changes=false
         while IFS= read -r file; do
           if [[ "$file" != *"README.md" ]]; then
+            echo "Fichier non-README détecté: $file"
             non_readme_changes=true
             break
           fi
         done <<< "${{ steps.changed-files.outputs.all_changed_files }}"
         echo "non_readme_changes=$non_readme_changes" >> $GITHUB_OUTPUT
+        echo "Valeur finale de non_readme_changes: $non_readme_changes"
 
     - name: Update files
       if: steps.check-changes.outputs.non_readme_changes == 'true'
