@@ -1,4 +1,4 @@
-name: Detect Changed Files
+name: Update README files
 
 on: [push]
 
@@ -16,10 +16,22 @@ jobs:
       id: changed-files
       uses: tj-actions/changed-files@v45
 
-    - name: Print changed files
+    - name: Update README files
       run: |
         echo "Les fichiers modifiés sont :"
         for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
           dir=$(dirname "$file")
-          echo "$dir"
-        done | sort -u
+          readme_path="$dir/README.md"
+          if [ "$dir" != "." ] && [ -f "$readme_path" ]; then
+            echo "Mise à jour du fichier: $readme_path"
+            echo "Cette ligne a été ajoutée automatiquement par GitHub Actions." >> "$readme_path"
+          fi
+        done
+
+    - name: Commit changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git diff --quiet && git diff --staged --quiet || git commit -m "Mise à jour automatique des README.md"
+        git push
