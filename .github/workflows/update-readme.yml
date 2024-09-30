@@ -16,37 +16,35 @@ jobs:
       id: changed-files
       uses: tj-actions/changed-files@v45
 
-    - name: Check for non-README changes
+    - name: Check for changed files
       id: check-changes
       run: |
-        non_readme_changes=false
         while IFS= read -r file; do
           if [[ "$file" != *"README.md" ]]; then
-            echo "Fichier non-README détecté: $file"
-            non_readme_changes=true
-            break
+            Fichier = $file
+            echo "Fichier détecté: $file"
           fi
         done <<< "${{ steps.changed-files.outputs.all_changed_files }}"
-        echo "non_readme_changes=$non_readme_changes" >> $GITHUB_OUTPUT
-        echo "Valeur finale de non_readme_changes: $non_readme_changes"
 
     - name: Update files
-      if: steps.check-changes.outputs.non_readme_changes == 'true'
       run: |
-        while IFS= read -r file; do
+        for Fic in Fichier; do
           if [[ "$file" != *"README.md" ]]; then
             echo "Traitement du fichier: $file"
-            # Ajoutez ici le code pour traiter les fichiers non-README
-            # Par exemple :
-            echo "Cette ligne a été ajoutée par GitHub Actions" >> "$file"
           fi
         done <<< "${{ steps.changed-files.outputs.all_changed_files }}"
 
-    - name: Commit changes
-      if: steps.check-changes.outputs.non_readme_changes == 'true'
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add .
-        git diff --quiet && git diff --staged --quiet || git commit -m "Mise à jour automatique des fichiers (hors README)"
-        git push
+    # - name: Commit changes
+    #   if: 
+    #   run: |
+    #     git config --local user.email "action@github.com"
+    #     git config --local user.name "GitHub Action"
+    #     git add .
+    #     git diff --quiet && git diff --staged --quiet || git commit -m "Mise à jour automatique des fichiers (hors README)"
+    #     git push
+
+
+# Ajout du fait qu'il n'execute pas si les premier dossier ne sont pas dans 1er semestre, etc
+# Faire une boucle pour traiter les fichiers
+# verifier si il y a bien un fichier README dans le dossier parent
+# mettre le lien dans la bonne ligne (CM, TD, TP)
