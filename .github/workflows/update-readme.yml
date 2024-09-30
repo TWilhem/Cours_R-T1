@@ -21,7 +21,7 @@ jobs:
       run: |
         while IFS= read -r file; do
           if [[ "$file" != *"README.md" ]]; then
-            Fichier = $file
+            Fichier=$file
             echo "Fichier détecté: $file"
           fi
         done <<< "${{ steps.changed-files.outputs.all_changed_files }}"
