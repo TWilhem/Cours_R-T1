@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>TP3 R101.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="r101-tp3">R101 TP3</h1>
+<p>Manipulation des adresses IP<br>
+Tom Wilhem RT1</p>
+<hr>
+<ol>
+<li>
+<p><strong>Configuration d'un poste de travail</strong></p>
+<ul>
+<li>Quel est l'utilité de la commande mii-tool ?
+<ul>
+<li>En utilisant la commande <code>man mii-tool</code>, une documentation s'affiche dans la console, on nous apprend que <code>mii-tool</code> &quot;permet de vérifier l'état de la connexion, de forcer la vitesse et le mode duplex, et d'activer ou désactiver l'auto-négociation&quot;</li>
+</ul>
+</li>
+<li>Dans le terminal taper la commande mii-tool. Expliquer le message d'erreur.
+<ul>
+<li>Si on tape la commande <code>mii-tool &lt;interface&gt;</code> en tant que user, on reçoit l'erreur:<br>
+<img src="mii-tool.png" alt=""></li>
+<li>On passe en root et execute la même commande, on obtient:<br>
+<img src="mii-tool su.png" alt=""></li>
+<li>Toujours en root, on execute la commande mii-tool -w eno1:
+ce resultat montre que le cable Rj45 a été debanché (plus de connexion avec le switch)
+<img src="mii-tool -w.png" alt=""></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Activer son interface</strong></p>
+<ul>
+<li>Tapez la commande suivante et expliquer les termes associés à l'interface eno1 :
+<ul>
+<li>Après avoir executer la commande <code>ip link show eno1</code>, on peut voir que l'interface est en &quot;state up&quot; en &quot;default up&quot;. Cela nous indique que la carte est active
+<img src="ip_link_show_eno1.png" alt=""></li>
+<li>On &quot;Down&quot; l'interface reseau eno1 avec la commande <code>ip link set down dev eno1</code>. Comme on peut le voir a la capture d'ecran, l'interface eno1 a été passé en etat &quot;down&quot;.
+<img src="set_down.png" alt=""></li>
+<li>En accedant a une page web, il me dit que je n'ai plus de reseau</li>
+<li>On reactive la carte avec la commande <code>ip link set up dev eno1</code>
+<img src="set_up.png" alt=""></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Configurer son interface</strong></p>
+<ul>
+<li>Quelle option de la commande ip peut on utiliser pour visualiser l'adresse ip de sa machine ?
+<ul>
+<li>On peut utiliser la commande <code>ip -c -br a</code> afin de voir l'adresse ip de chaque interface</li>
+</ul>
+</li>
+<li>Taper la commande suivant et commenter le résultat :
+<ul>
+<li>La commande <code>ip addr show eno1</code> nous renvoie la commande le resultat de cette capture. On peut y voir l'adresse ip avec son masque attribuer a l'interface eno1</li>
+</ul>
+</li>
+<li>Quelle différence y a-t-il avec les commandes suivantes :
+<ul>
+<li>Les commandes <code>ip addr</code> ou <code>ip a</code> permettent de voir toutes les interfaces ce qui n'est pas très pratique</li>
+</ul>
+</li>
+<li>A votre avis, pourquoi peut on taper ip a en lieu et place de ip addr ?
+<ul>
+<li>En utilisant la commande <code>man ip</code> on decouvre que &quot;a&quot; est un argument pour all</li>
+</ul>
+</li>
+<li>Quelle option de la commande ip permet de supprimer toutes les adresses ip associées à une interface ?
+<ul>
+<li>La commande afin de supprimer les adresses ip d'une carte réseau est <code>ip addr flush dev eno1</code></li>
+</ul>
+</li>
+<li>Afficher maintenant la configuration ip de l'interface &lt;Nom De Votre Interface&gt;. Que peut on observer ?
+<ul>
+<li>En utilisant la commande <code>ip -c -br a</code>, on peut voir que la carte eno1 est Up donc active mais quelle ne possede pas d'adresse ip
+<img src="addr_flush.png" alt=""></li>
+</ul>
+</li>
+<li>A l'aide de la commande ip route afficher la liste des routes de sortie connues par votre machine. Que constatez vous ?
+<ul>
+<li>On peut voir que l'interface eno1 ne posséde plus de route
+<img src="ip_route.png" alt=""></li>
+</ul>
+</li>
+<li>Utilisez la commande ip addr add pour ajouter l'adresse correspondant à votre machine. Quels sont tous les champs qu'il faut utiliser dans la commande ?
+<ul>
+<li>On utilise la commande <code>ip addr add 10.213.3.1/16 dev eno1</code> afin de remettre une adresse ip a l'interface eno1
+<img src="ip-addr-add.png" alt=""></li>
+</ul>
+</li>
+<li>Taper la commande suivante pour vérifier que votre machine et votre voisin arriviez bien à communiquer. A quoi correspond l’option -c 3 ?
+<ul>
+<li>J'execute la commande <code>ping 10.213.2.1 -c 3</code>. Le retour m'informe que je detecte bien le pc de mon camarade et que je peux lui envoyer des paquets. Le -c 3 indique qu'il va envoyer trois ping avant d'arreter l'action. on peut voir que les paquets font une taille de 64 bytes, qu'il sont envoyé a l'adresse 10.213.2.1 en icmp, le temps de reponse est de 0.444ms au maximum. On a aucune perte de paquets indiquant une bonne connexion
+<img src="ping_-c3.png" alt=""></li>
+</ul>
+</li>
+<li>Vérifiez que vous avez bien accès au réseau local en envoyant un ping sur une adresse interne (par exemple le serveur DNS: 10.255.255.200) mais aussi à l'internet en envoyant un ping sur 8.8.8.8
+<ul>
+<li>Après avoir mis la route. On ping le serveur DNS a l'adresse 10.255.255.200. On peut voir qu'il y a accès. On fait de même avec l'adresse DNS de google (adresse public) 8.8.8.8 et on peut voir qu'il y a accès. je peux en conclure que mon PC est connecter au reseau public
+<img src="access_reseau.png" alt=""></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Tests sur la compatibilité des adresses</strong></p>
+</li>
+<li>
+<p><strong>Masque de sous réseau</strong></p>
+<ul>
+<li>Question 1/2/3
+<ul>
+<li>On va executer ces commandes afin de changer son masque en /24:<br>
+<code>ip addr flush eno1</code><br>
+<code>ip addr add 10.213.3.1/24</code><br>
+<code>ip -c -br -a</code>
+<img src="ping_24.png" alt="">
+<img src="routage.png" alt=""></li>
+</ul>
+</li>
+<li>Question 4/5
+<ul>
+<li>En executant un ping sur ma machine vers mon binome ou l'inverse, le ping renvoie &quot;Destination Host Uncreachable&quot;. Cette erreur indique que les deux pc ne sont pas en mesure de communiqué sur le réseau</li>
+</ul>
+</li>
+<li>Question 6
+<ul>
+<li>Le masque de réseau qui ce met automatiqument est le /32 car l'adresse 10.213.3.1 est considéré comme une machine isolée du réseau si on ne lui ajoute pas de masque
+<img src="flush_route_+ip.png" alt=""></li>
+</ul>
+</li>
+<li>Question 7
+<ul>
+<li>On ne peut pas joindre de machine du reseau local avec le masque en /32 car les machine ne sont pas considére comme sur le même réseau</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Importance de l'adresse du réseau</strong></p>
+<ul>
+<li>Question 1/2
+<ul>
+<li>On a execute la commande <code>ip route flush dev eno1</code> qui nous a permit de retirer la route de la carte réseau tout en gardant notre adresse ip</li>
+</ul>
+</li>
+<li>Question 4
+<ul>
+<li>On fait un ping sur la machine d'un binôme est je confirme que je ne peut pas le ping</li>
+</ul>
+</li>
+<li>Question 4/5
+<ul>
+<li>Je vois que je suis en mesure de joindre le PC de mon binome et qu'il est egalement possible pour lui de me joindre. je ne suis pas en mesure de ping un autre PC du reseau local. j'en conclus que ma route en /32 ne me permet d'acceder que a l'adresse de route definit.</li>
+</ul>
+</li>
+<li>Question 6
+<ul>
+<li>Cette solution est viable si il y a que 1 ou 2 machine mais si il y a 60 machines alors cela devient invivable car il faudrait configuré $60^{60}$ route</li>
+</ul>
+</li>
+<li>Question 7
+<ul>
+<li>On execute la commande <code>ip route dev eno1</code> pour retirer ma configuration puis j'execute la commande <code>ip route add 10.213.0.0/16</code>. Je teste ensuite la connexion avec un de mes camarades avec la commande <code>ping 10.213.9.1</code>, je reçois bien les paquets</li>
+</ul>
+</li>
+<li>Question 8
+<ul>
+<li>En conlusion. L'adresse de reseau permet a ma machine de ce connecter et de communiquer sur un reseau, sans lui je suis incapable de joindre une quelconque <strong>machine</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Rôle de la passerelle</strong></p>
+<ul>
+<li>Question 1
+<ul>
+<li>On execute la commande <code>ip addr flush dev eno1</code></li>
+</ul>
+</li>
+<li>Question 2-3
+<ul>
+<li>Je met ma machine en 192.168.1.3/24 avec la commande <code>ip addr add 192.168.1.3/24 dev eno1</code>. Mon college va lui mettre sa machine en <code>10.213.4.1/8</code></li>
+</ul>
+</li>
+<li>Question 4
+<ul>
+<li>J'execute la commande <code>ping 10.213.4.1</code>. Le message d'erreur qui nous est renvoyé est: <code>ping: connect: Le réseau n'est pas accessible</code></li>
+</ul>
+</li>
+<li>Question 5
+<ul>
+<li>On passe en mode root avec la commande <code>su -</code>. Puis on execute la commande <code>echo 1 &gt; /proc/sys/net/ipv4/ip_forward</code></li>
+</ul>
+<pre><code class="language-mermaid"><div class="mermaid">flowchart LR
+  B(PC en 10.213.4.1/8)
+  D(PC en 192.168.1.3/24)
+  B -->|reseau en 10.0.0.0| C{Routeur}
+  D -->|reseau en 192.168.1.0| C{Routeur}
+</div></code></pre>
+</li>
+<li>Question 6-7
+<ul>
+<li>On rajoute la route avec la commande <code>sudo ip route add default via 192.168.1.254 dev eno1</code> en tant que test.</li>
+<li>Mon collegue va lui executer la commande <code>ip route add default via 10.255.255.254 dev eno1</code></li>
+</ul>
+</li>
+<li>Question 8
+<ul>
+<li>On test la connexion entre la machine du collegue avec la commande <code>ping 10.213.4.1</code>. La connexion a bien reussi.</li>
+</ul>
+</li>
+<li>Question 9
+<ul>
+<li>En conclusion si deux machines de reseau different souhaite communiqué, alors il devront passé par un routeur qui fera la transmission entre les deux reseau</li>
+<li></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+
+</body>
+</html>
