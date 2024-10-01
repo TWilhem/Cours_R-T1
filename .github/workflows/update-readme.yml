@@ -33,6 +33,7 @@ jobs:
           for fichier in "${Fichier[@]}"; do
             echo "Fichier détecté: $fichier"
           done
+        fi
 
     # - name: Commit changes
     #   if: 
