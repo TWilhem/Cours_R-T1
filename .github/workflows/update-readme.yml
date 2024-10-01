@@ -23,17 +23,11 @@ jobs:
         while IFS= read -r file; do
           if [[ "$file" != *"README.md" && "$file" == *"1er Semestre/"* ]]; then
             Fichier+=("$file")
-            echo "Fichier ajouté: $file"
+            echo "Fichier detecté :"
+            printf "%s\n" "${Fichier[@]}"
           fi
         done <<< "${{ steps.changed-files.outputs.all_changed_files }}"
 
-        if [ ${#Fichier[@]} -eq 0 ]; then
-          echo "Aucun fichier détecté correspondant aux critères."
-        else
-          for fichier in "${Fichier[@]}"; do
-            echo "Fichier détecté: $fichier"
-          done
-        fi
 
     # - name: Commit changes
     #   if: 
