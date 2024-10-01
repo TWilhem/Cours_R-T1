@@ -25,21 +25,14 @@ jobs:
         all_changed_files=".github/workflows/update-readme.yml 1er Semestre/R114/TD/README.md 1er Semestre/R115/TD/COURS Gestion de projet cascade ETU.pdf"
 
         # Lire tous les fichiers dans un tableau en utilisant le bon format
-        IFS=' ' read -r -a all_files <<< "$all_changed_files"
-
-        # Afficher tous les fichiers détectés
-        echo "Fichiers détectés :"
-        for file in "${all_files[@]}"; do
-            echo "$file"
-        done
-
-        for file in "${all_files[@]}"; do
+        # Utiliser 'printf' pour gérer les espaces correctement
+        while IFS= read -r file; do
             # Vérifie si le fichier n'est pas README.md et qu'il est dans le répertoire 1er Semestre/
             if [[ "$file" != *"README.md" && "$file" == *"1er Semestre/"* ]]; then
                 Fichier+=("$file")
                 echo "Fichier détecté : $file"
             fi
-        done
+        done < <(printf '%s\n' $all_changed_files)
 
         if [ ${#Fichier[@]} -gt 0 ]; then
             echo "Total de fichiers détectés : ${#Fichier[@]}"
