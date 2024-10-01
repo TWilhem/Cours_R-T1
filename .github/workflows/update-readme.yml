@@ -20,12 +20,12 @@ jobs:
       id: check-changes
       run: |
         Fichier=()
-        for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+        for file in "${{ steps.changed-files.outputs.all_changed_files }}"; do
           if [[ "$file" != *"README.md" && "$file" == *"1er Semestre/"* ]]; then
             Fichier+=("$file")
-            echo "Fichier detecté : $file"
+            echo "Fichier detecté : %s\n" "$file"
           fi
-        done | sort -u
+        done
 
         if [ ${#Fichier[@]} -gt 0 ]; then
           for f in "${Fichier[@]}"; do
