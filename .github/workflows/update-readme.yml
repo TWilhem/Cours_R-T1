@@ -25,7 +25,7 @@ jobs:
             Fichier+=("$file")
             echo "Fichier détecté: $file"
           fi
-        done <<< "${{ steps.changed-files.outputs.all_changed_files }}"
+        done
 
 
     # - name: Commit changes
