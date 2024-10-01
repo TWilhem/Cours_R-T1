@@ -20,6 +20,7 @@ jobs:
       id: check-changes
       run: |
         Fichier=()
+        echo "Le chemin absolu est: $(pwd)"
         while IFS= read -r file; do
           if [[ "$file" != *"README.md" && "$file" == ./1er\ Semestre* ]]; then
             Fichier+=("$file")
