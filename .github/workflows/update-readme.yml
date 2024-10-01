@@ -27,6 +27,12 @@ jobs:
         # Lire tous les fichiers dans un tableau en utilisant le bon format
         IFS=' ' read -r -a all_files <<< "$all_changed_files"
 
+        # Afficher tous les fichiers détectés
+        echo "Fichiers détectés :"
+        for file in "${all_files[@]}"; do
+            echo "$file"
+        done
+
         for file in "${all_files[@]}"; do
             # Vérifie si le fichier n'est pas README.md et qu'il est dans le répertoire 1er Semestre/
             if [[ "$file" != *"README.md" && "$file" == *"1er Semestre/"* ]]; then
