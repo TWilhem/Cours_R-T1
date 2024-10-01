@@ -29,8 +29,8 @@ jobs:
     - name: Update files
       run: |
         for Fic in Fichier; do
-          if [[ "$file" != *"README.md" ]]; then
-            echo "Traitement du fichier: $file"
+          if [[ "Fic" != *"README.md" ]]; then
+            echo "Traitement du fichier: Fic"
           fi
         done <<< "${{ steps.changed-files.outputs.all_changed_files }}"
 
