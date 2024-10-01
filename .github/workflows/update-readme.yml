@@ -21,8 +21,12 @@ jobs:
       run: |
         Fichier=()
         
+        # Simuler l'entrée des fichiers pour le test
+        # Remplacez ceci par l'entrée réelle dans votre workflow
+        all_changed_files=".github/workflows/update-readme.yml 1er Semestre/R114/TD/README.md 1er Semestre/R115/TD/COURS Gestion de projet cascade ETU.pdf"
+    
         # Lire tous les fichiers dans un tableau en utilisant le bon format
-        readarray -t all_files <<< "${{ steps.changed-files.outputs.all_changed_files }}"
+        readarray -t all_files <<< "$all_changed_files"
     
         for file in "${all_files[@]}"; do
           # Vérifie si le fichier n'est pas README.md et qu'il est dans le répertoire 1er Semestre/
