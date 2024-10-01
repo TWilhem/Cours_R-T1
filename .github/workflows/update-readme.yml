@@ -20,10 +20,12 @@ jobs:
       id: check-changes
       run: |
         Fichier=()
-        for file in "${{ steps.changed-files.outputs.all_changed_files }}"; do
+        IFS=' ' # Définir le séparateur sur un espace
+        for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+          # Vérifie si le fichier n'est pas README.md et qu'il est dans le répertoire 1er Semestre/
           if [[ "$file" != *"README.md" && "$file" == *"1er Semestre/"* ]]; then
             Fichier+=("$file")
-            printf "Fichier detecté : %s\n" "$file"
+            echo "Fichier détecté : $file"
           fi
         done
     
