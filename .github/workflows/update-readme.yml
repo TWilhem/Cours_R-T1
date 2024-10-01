@@ -25,7 +25,7 @@ jobs:
             Fichier+=("$file")
             echo "Fichier detecté : $file"
           fi
-        done
+        done | sort -u
 
         if [ ${#Fichier[@]} -gt 0 ]; then
           for f in "${Fichier[@]}"; do
