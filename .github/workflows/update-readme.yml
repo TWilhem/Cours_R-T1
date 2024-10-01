@@ -23,7 +23,7 @@ jobs:
         for file in "${{ steps.changed-files.outputs.all_changed_files }}"; do
           if [[ "$file" != *"README.md" && "$file" == *"1er Semestre/"* ]]; then
             Fichier+=("$file")
-            echo "Fichier détecté : $file"
+            printf "Fichier detecté : %s\n" "$file"
           fi
         done
     
