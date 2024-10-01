@@ -24,9 +24,16 @@ jobs:
           if [[ "$file" != *"README.md" && "$file" == *"1er Semestre/"* ]]; then
             Fichier+=("$file")
             echo "Fichier detecté :"
-            printf "%s\n" "${Fichier[@]}"
           fi
         done <<< "${{ steps.changed-files.outputs.all_changed_files }}"
+
+        if [ ${#Fichier[@]} -gt 0 ]; then
+          for f in "${Fichier[@]}"; do
+            echo "$f"
+          done
+        else
+          echo "Aucun fichier détecté."
+        fi
 
 
     # - name: Commit changes
