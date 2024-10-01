@@ -20,14 +20,12 @@ jobs:
       id: check-changes
       run: |
         Fichier=()
-        IFS=' ' read -r -a fichiers_array <<< "${{ steps.changed-files.outputs.all_changed_files }}"
-        
-        for file in "${fichiers_array[@]}"; do
+        while IFS=' ' read -r file; do
           if [[ "$file" != *"README.md" && "$file" == *"1er Semestre/"* ]]; then
-            Fichier+=("$file")  # Ajoute le fichier au tableau
-            echo "Fichier détecté : $file"  # Affiche chaque fichier détecté
+            Fichier+=("$file")
+            echo "Fichier detecté :"
           fi
-        done
+        done <<< "${{ steps.changed-files.outputs.all_changed_files }}"
 
         if [ ${#Fichier[@]} -gt 0 ]; then
           for f in "${Fichier[@]}"; do
