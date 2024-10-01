@@ -23,11 +23,12 @@ jobs:
         for file in "${{ steps.changed-files.outputs.all_changed_files }}"; do
           if [[ "$file" != *"README.md" && "$file" == *"1er Semestre/"* ]]; then
             Fichier+=("$file")
-            echo "Fichier detecté : %s\n" "$file"
+            echo "Fichier détecté : $file"
           fi
         done
-
+    
         if [ ${#Fichier[@]} -gt 0 ]; then
+          echo "Total de fichiers détectés : ${#Fichier[@]}"
           for f in "${Fichier[@]}"; do
             echo "$f"
           done
