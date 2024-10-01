@@ -21,13 +21,12 @@ jobs:
       run: |
         Fichier=()
         while IFS= read -r file; do
-          if [[ "$file" != *"README.md" && "$file" =~ ^1er\ Semestre ]]; then
+          if [[ "$file" != *"README.md" && "$file" == *"1er\ Semestre"* ]]; then
             Fichier+=("$file")
             echo "Fichier détecté: $file"
           fi
         done <<< "${{ steps.changed-files.outputs.all_changed_files }}"
 
-        echo "All detected files: ${Fichier[@]}"
 
     # - name: Commit changes
     #   if: 
