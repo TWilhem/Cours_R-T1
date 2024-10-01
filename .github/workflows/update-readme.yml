@@ -20,10 +20,8 @@ jobs:
       id: check-changes
       run: |
         Fichier=()
-        echo "($pwd)"
         while IFS= read -r file; do
-          echo "($pwd)"
-          if [[ "$file" != *"README.md" && "$file" == 1er\ Semestre/* ]]; then
+          if [[ "$file" != *"README.md" && "$file" == *"1er Semestre/"* ]]; then
             Fichier+=("$file")
             echo "Fichier ajouté: $file"
           fi
