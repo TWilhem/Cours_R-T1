@@ -25,7 +25,7 @@ jobs:
             Fichier+=("$file")
             echo "Fichier detecté :"
           fi
-        done <<< "$(echo "${{ steps.changed-files.outputs.all_changed_files }}" | tr ' ' '\n')"
+        done <<< "${{ steps.changed-files.outputs.all_changed_files }}"
 
         if [ ${#Fichier[@]} -gt 0 ]; then
           for f in "${Fichier[@]}"; do
