@@ -29,6 +29,7 @@ jobs:
 
         if [ ${#Fichier[@]} -eq 0 ]; then
           echo "Aucun fichier détecté correspondant aux critères."
+          echo "($pwd)"
         else
           for fichier in "${Fichier[@]}"; do
             echo "Fichier détecté: $fichier"
