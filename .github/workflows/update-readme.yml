@@ -21,14 +21,14 @@ jobs:
       run: |
         while IFS= read -r file; do
           if [[ "$file" != *"README.md" ]]; then
-            Fichier=$file
+            $Fichier=$file
             echo "Fichier détecté: $file"
           fi
         done <<< "${{ steps.changed-files.outputs.all_changed_files }}"
 
     - name: Update files
       run: |
-        for Fic in Fichier; do
+        for Fic in $Fichier; do
           if [[ "Fic" != *"README.md" ]]; then
             echo "Traitement du fichier: $Fic"
           fi
