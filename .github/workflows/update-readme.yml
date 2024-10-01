@@ -20,7 +20,9 @@ jobs:
       id: check-changes
       run: |
         Fichier=()
+        echo "($pwd)"
         while IFS= read -r file; do
+          echo "($pwd)"
           if [[ "$file" != *"README.md" && "$file" == 1er\ Semestre/* ]]; then
             Fichier+=("$file")
             echo "Fichier ajouté: $file"
@@ -29,7 +31,6 @@ jobs:
 
         if [ ${#Fichier[@]} -eq 0 ]; then
           echo "Aucun fichier détecté correspondant aux critères."
-          echo "($pwd)"
         else
           for fichier in "${Fichier[@]}"; do
             echo "Fichier détecté: $fichier"
