@@ -1,52 +1,27 @@
-name: Update Files
+name: Detect Changed Files
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  update_files:
+  detect_changes:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Get changed files
-      id: changed-files
-      uses: tj-actions/changed-files@v45
+      - name: Get changed files
+        id: get_changed_files
+        run: |
+          echo "Changed files:"
+          git diff --name-only HEAD^ HEAD > changed_files.txt
+          cat changed_files.txt
+          echo "::set-output name=files::$(cat changed_files.txt)"
 
-    - name: Check for changed files
-      id: check-changes
-      run: |
-        Fichier=()
-        while IFS=' ' read -r file; do
-          if [[ "$file" != *"README.md" && "$file" == *"1er Semestre/"* ]]; then
-            Fichier+=("$file")
-            echo "Fichier detecté :"
-          fi
-        done <<< "${{ steps.changed-files.outputs.all_changed_files }}"
-
-        if [ ${#Fichier[@]} -gt 0 ]; then
-          for f in "${Fichier[@]}"; do
-            echo "$f"
-          done
-        else
-          echo "Aucun fichier détecté."
-        fi
-
-
-    # - name: Commit changes
-    #   if: 
-    #   run: |
-    #     git config --local user.email "action@github.com"
-    #     git config --local user.name "GitHub Action"
-    #     git add .
-    #     git diff --quiet && git diff --staged --quiet || git commit -m "Mise à jour automatique des fichiers (hors README)"
-    #     git push
-
-
-# Ajout du fait qu'il n'execute pas si les premier dossier ne sont pas dans 1er semestre, etc
-# Faire une boucle pour traiter les fichiers
-# verifier si il y a bien un fichier README dans le dossier parent
-# mettre le lien dans la bonne ligne (CM, TD, TP)
+      - name: Display changed files
+        run: |
+          echo "Les fichiers changés sont :"
+          echo "${{ steps.get_changed_files.outputs.files }}"
