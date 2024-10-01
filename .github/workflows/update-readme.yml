@@ -27,7 +27,7 @@ jobs:
           # Vérifie si le fichier n'est pas README.md et qu'il est dans le répertoire 1er Semestre/
           if [[ "$file" != *"README.md" && "$file" == *"1er Semestre/"* ]]; then
             Fichier+=("$file")
-            echo "Fichier détecté : $file"
+            printf "Fichier detecté : %s\n" "$file"
           fi
         done
     
