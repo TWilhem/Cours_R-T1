@@ -22,20 +22,20 @@ jobs:
       id: check-changes
       run: |
         Fichier=()
-        IFS='|' read -r -a fichiers_array <<< "${{ steps.changed-files.outputs.all_changed_files }}"
         
-        for file in "${fichiers_array[@]}"; do
+        # Utiliser une boucle while pour lire les fichiers
+        while IFS= read -r -d '|' file; do
+          # Décode les caractères spéciaux
           decoded_file=$(echo -e "$file")
-
-        for file in "${fichiers_array[@]}"; do
-          if [[ "$file" != *"README.md" && "$file" == *"1er Semestre/"* ]]; then
-            Fichier+=("$file")  # Ajoute le fichier au tableau
-            echo "Fichier détecté : $file"  # Affiche chaque fichier détecté
+          
+          if [[ "$decoded_file" != *"README.md" && "$decoded_file" == *"1er Semestre/"* ]]; then
+            Fichier+=("$decoded_file")
+            echo "Fichier détecté : $decoded_file"
           fi
-        done
-
+        done <<< "${{ steps.changed-files.outputs.all_changed_files }}|"
+        
         if [ ${#Fichier[@]} -gt 0 ]; then
-          echo "Fichier détecté :"
+          echo "Tous les fichiers détectés :"
           for f in "${Fichier[@]}"; do
             echo "$f"
           done
