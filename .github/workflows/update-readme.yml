@@ -15,35 +15,20 @@ jobs:
     - name: Get changed files
       id: changed-files
       uses: tj-actions/changed-files@v45
+      with:
+        separator: ","
 
     - name: Check for changed files
       id: check-changes
       run: |
-        Fichier=()
+        while IFS=',' read -r file; do
+          if [[ "$file" != *"README.md" ]]; then
+            Fichier=$file
+            echo "Fichier détecté: $file"
+          fi
+        done <<< "${{ steps.changed-files.outputs.all_changed_files }}"
+  
 
-        # Simuler l'entrée des fichiers pour le test
-        all_changed_files=".github/workflows/update-readme.yml 1er Semestre/R114/TD/README.md 1er Semestre/R115/TD/COURS Gestion de projet cascade ETU.pdf"
-
-        # Lire tous les fichiers dans un tableau en utilisant un séparateur d'espace
-        # Utiliser 'set' pour gérer les espaces correctement
-        set -- $all_changed_files
-
-        for file in "$@"; do
-            # Vérifie si le fichier n'est pas README.md et qu'il est dans le répertoire 1er Semestre/
-            if [[ "$file" != *"README.md" && "$file" == *"1er Semestre/"* ]]; then
-                Fichier+=("$file")
-                echo "Fichier détecté : $file"
-            fi
-        done
-
-        if [ ${#Fichier[@]} -gt 0 ]; then
-            echo "Total de fichiers détectés : ${#Fichier[@]}"
-            for f in "${Fichier[@]}"; do
-                echo "$f"
-            done
-        else
-            echo "Aucun fichier détecté."
-        fi
 
     # - name: Commit changes
     #   if: 
