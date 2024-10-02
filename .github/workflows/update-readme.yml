@@ -21,10 +21,11 @@ jobs:
     - name: Check for changed files
       id: check-changes
       run: |
+        printf "Fichier détecté: %s\n"
         while IFS=',' read -r file; do
           if [[ "$file" != *"README.md" ]]; then
             Fichier=$file
-            echo "Fichier détecté: $file"
+            echo "$file" "%s\n"
           fi
         done <<< "${{ steps.changed-files.outputs.all_changed_files }}"
   
