@@ -22,7 +22,7 @@ jobs:
       id: check-changes
       run: |
         printf "Fichier détecté:\n"
-        while IFS=',' read -r file; do
+        while IFS=',' read -r file | tr ',' '\n'; do
           if [[ "$file" != *"README.md" ]]; then
             Fichier=$file
             printf "%s\n" "$file"
