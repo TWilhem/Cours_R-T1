@@ -21,14 +21,22 @@ jobs:
     - name: Check for changed files
       id: check-changes
       run: |
-        printf "Fichier détecté:\n"
-        while IFS=',' read -r file | tr ',' '\n'; do
-          if [[ "$file" != *"README.md" ]]; then
-            Fichier=$file
-            printf "%s\n" "$file"
+        Fichier=()
+        IFS=',' read -r -a fichiers_array <<< "${{ steps.changed-files.outputs.all_changed_files }}"
+        
+        for file in "${fichiers_array[@]}"; do
+          if [[ "$file" != *"README.md" && "$file" == *"1er Semestre/"* ]]; then
+            Fichier+=("$file")  # Ajoute le fichier au tableau
+            echo "Fichier détecté : $file"  # Affiche chaque fichier détecté
           fi
-        done <<< "${{ steps.changed-files.outputs.all_changed_files }}"
-  
+        done
+        if [ ${#Fichier[@]} -gt 0 ]; then
+          for f in "${Fichier[@]}"; do
+            echo "$f"
+          done
+        else
+          echo "Aucun fichier détecté."
+        fi
 
 
     # - name: Commit changes
