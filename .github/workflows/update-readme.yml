@@ -16,23 +16,24 @@ jobs:
       id: changed-files
       uses: tj-actions/changed-files@v45
       with:
-        separator: ","
+        separator: "|"
 
     - name: Check for changed files
       id: check-changes
       run: |
         Fichier=()
-        IFS=',' read -r -a fichiers_array <<< "${{ steps.changed-files.outputs.all_changed_files }}"
+        IFS='|' read -r -a fichiers_array <<< "${{ steps.changed-files.outputs.all_changed_files }}"
         
         for file in "${fichiers_array[@]}"; do
-          # Convertir le nom du fichier en minuscules et remplacer les accents
-          file_lower=$(echo "$file" | tr '[:upper:]' '[:lower:]' | tr 'àáâäæãåāçćčèéêëēėęîïíīįìñńôöòóœøōõßśšûüùúūÿžźż' 'aaaaaaaaaaccceeeeeeeiiiiiinnnoooooooosssuuuuuuyzz')
-          
-          if [[ "$file_lower" != *"readme.md" && "$file_lower" == *"1er semestre/"* ]]; then
-            Fichier+=("$file")
+          decoded_file=$(echo -e "$file")
+
+        for file in "${fichiers_array[@]}"; do
+          if [[ "$file" != *"README.md" && "$file" == *"1er Semestre/"* ]]; then
+            Fichier+=("$file")  # Ajoute le fichier au tableau
+            echo "Fichier détecté : $file"  # Affiche chaque fichier détecté
           fi
         done
-    
+
         if [ ${#Fichier[@]} -gt 0 ]; then
           echo "Fichier détecté :"
           for f in "${Fichier[@]}"; do
