@@ -24,10 +24,10 @@ jobs:
         export LC_ALL=C.UTF-8
         Fichier=()
         
-        input_string=$(echo "${{ steps.changed-files.outputs.all_changed_files }}" | sed 's/"/\\"/g')
+        input_string=$(echo -e "${{ steps.changed-files.outputs.all_changed_files }}" | sed 's/"/\\"/g')
         
         while IFS= read -r -d '|' file; do
-          decoded_file=$(echo "$file" | iconv -f UTF-8 -t UTF-8//TRANSLIT)
+          decoded_file=$(printf '%b' "$file")
           
           if [[ "$decoded_file" != *"README.md" && "$decoded_file" == *"1er Semestre/"* ]]; then
             Fichier+=("$decoded_file")
@@ -37,7 +37,7 @@ jobs:
         if [ ${#Fichier[@]} -gt 0 ]; then
           echo "Tous les fichiers détectés :"
           for f in "${Fichier[@]}"; do
-            echo "$f"
+            printf '%b\n' "$f"
           done
         else
           echo "Aucun fichier détecté."
