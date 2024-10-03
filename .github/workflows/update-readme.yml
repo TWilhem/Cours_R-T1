@@ -26,7 +26,8 @@ jobs:
         input_string=$(echo "${{ steps.changed-files.outputs.all_changed_files }}")
         
         decode_special_chars() {
-          echo "$1" | sed 's/303240/à/g; s/303250/è/g; s/303251/é/g; s/303252/ê/g; s/303256/î/g; s/303264/ô/g; s/303271/ù/g'
+          local decoded=$(echo "$1" | sed 's/303240/à/g; s/303250/è/g; s/303251/é/g; s/303252/ê/g; s/303256/î/g; s/303264/ô/g; s/303271/ù/g')
+          echo "$decoded" | sed 's/\\$//'
         }
 
         IFS='|' read -ra files <<< "$input_string"
@@ -35,13 +36,13 @@ jobs:
           decoded_file=$(printf '%b' "$decoded_file")
           
           if [[ "$decoded_file" != *"README.md" && "$decoded_file" == *"1er Semestre/"* ]]; then
-            Fichier+=("$(echo "$decoded_file" | sed 's/\\$//')")
+            Fichier+=("$decoded_file")
           fi
         done
         
         if [ ${#Fichier[@]} -gt 0 ]; then
           echo "Tous les fichiers détectés :"
-          printf '%s\n' "${Fichier[@]}"
+          printf '%s\n' "${Fichier[@]}" 
         else
           echo "Aucun fichier détecté."
         fi
