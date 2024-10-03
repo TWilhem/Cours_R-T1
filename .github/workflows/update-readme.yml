@@ -29,11 +29,10 @@ jobs:
       run: |
         Fichier=()
         
-        input_string=$"${{ steps.changed-files.outputs.all_changed_files }}"
-        echo "$input_string"
+        input_string=$(echo "${{ steps.changed-files.outputs.all_changed_files }}")
         
         decode_special_chars() {
-          echo "$1" | sed 's/\\303\\240/à/g; s/\\303\\250/è/g; s/\\303\\251/é/g; s/\\303\\252/ê/g; s/\\303\\256/î/g; s/\\303\\264/ô/g; s/\\303\\271/ù/g'
+          echo "$1" | sed 's/303240/à/g; s/303250/è/g; s/303251/é/g; s/303252/ê/g; s/303256/î/g; s/303264/ô/g; s/303271/ù/g'
         }
 
         while IFS= read -r -d '|' file; do
