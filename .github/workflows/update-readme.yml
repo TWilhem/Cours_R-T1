@@ -23,10 +23,10 @@ jobs:
       run: |
         Fichier=()
         
-        input_string=$(echo "${{ steps.changed-files.outputs.all_changed_files }}")
+        input_string=$(echo "${{ steps.changed-files.outputs.all_changed_files }}" | sed 's/"/\\"/g')
         
         while IFS= read -r -d '|' file; do
-          decoded_file=$(printf '%b' "$file")
+          decoded_file=$(LC_ALL=C echo -e "$file")
           
           if [[ "$decoded_file" != *"README.md" && "$decoded_file" == *"1er Semestre/"* ]]; then
             Fichier+=("$decoded_file")
@@ -36,7 +36,7 @@ jobs:
         if [ ${#Fichier[@]} -gt 0 ]; then
           echo "Tous les fichiers détectés :"
           for f in "${Fichier[@]}"; do
-            printf '%s\n' "$f"
+            echo "$f"
           done
         else
           echo "Aucun fichier détecté."
