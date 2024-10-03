@@ -12,17 +12,11 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Configure Git encoding
-      run: |
-        git config --global core.quotePath false
-        git config --global core.precomposeunicode true
-
     - name: Get changed files
       id: changed-files
       uses: tj-actions/changed-files@v45
       with:
         separator: "|"
-        escape_json: 'false'
 
     - name: Check for changed files
       id: check-changes
@@ -41,13 +35,13 @@ jobs:
           decoded_file=$(printf '%b' "$decoded_file")
           
           if [[ "$decoded_file" != *"README.md" && "$decoded_file" == *"1er Semestre/"* ]]; then
-            Fichier+=("$decoded_file")
+            Fichier+=("$decoded_file" | sed 's/\\$//')
           fi
         done
         
         if [ ${#Fichier[@]} -gt 0 ]; then
           echo "Tous les fichiers détectés :"
-          printf '%s\n' "${Fichier[@]}" | sed 's/\\$//'
+          printf '%s\n' "${Fichier[@]}"
         else
           echo "Aucun fichier détecté."
         fi
