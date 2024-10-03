@@ -37,7 +37,7 @@ jobs:
           echo "Tous les fichiers détectés :"
           for f in "${Fichier[@]}"; do
             printf '%s\n' "$f"
-          fi
+          done
         else
           echo "Aucun fichier détecté."
         fi
