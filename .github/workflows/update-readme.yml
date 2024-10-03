@@ -23,17 +23,13 @@ jobs:
       run: |
         Fichier=()
         
-        # Échapper les guillemets dans la chaîne d'entrée
         input_string=$(echo "${{ steps.changed-files.outputs.all_changed_files }}" | sed 's/"/\\"/g')
         
-        # Utiliser une boucle while pour lire les fichiers
         while IFS= read -r -d '|' file; do
-          # Décode les caractères spéciaux
           decoded_file=$(echo -e "$file")
           
           if [[ "$decoded_file" != *"README.md" && "$decoded_file" == *"1er Semestre/"* ]]; then
             Fichier+=("$decoded_file")
-            echo "Fichier détecté : $decoded_file"
           fi
         done <<< "${input_string}|"
         
