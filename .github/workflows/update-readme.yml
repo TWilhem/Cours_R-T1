@@ -32,8 +32,13 @@ jobs:
         input_string=$"${{ steps.changed-files.outputs.all_changed_files }}"
         echo "$input_string"
         
+        decode_special_chars() {
+          echo "$1" | sed 's/\\303\\240/à/g; s/\\303\\250/è/g; s/\\303\\251/é/g; s/\\303\\252/ê/g; s/\\303\\256/î/g; s/\\303\\264/ô/g; s/\\303\\271/ù/g'
+        }
+
         while IFS= read -r -d '|' file; do
-          decoded_file=$(printf '%b' "$file")
+          decoded_file=$(decode_special_chars "$file")
+          decoded_file=$(printf '%b' "$decoded_file")
           
           if [[ "$decoded_file" != *"README.md" && "$decoded_file" == *"1er Semestre/"* ]]; then
             Fichier+=("$decoded_file")
