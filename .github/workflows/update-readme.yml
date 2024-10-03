@@ -23,7 +23,6 @@ jobs:
       with:
         separator: ","
         escape_json: 'false'
-        unicode_escape: 'false'
 
     - name: Process changed files
       run: |
