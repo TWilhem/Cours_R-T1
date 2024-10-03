@@ -23,7 +23,7 @@ jobs:
       run: |
         Fichier=()
         
-        input_string=$(echo "${{ steps.changed-files.outputs.all_changed_files }}" | sed 's/"/\\"/g')
+        input_string=$(echo "${{ steps.changed-files.outputs.all_changed_files }}")
         
         while IFS= read -r -d '|' file; do
           decoded_file=$(printf '%b' "$file")
