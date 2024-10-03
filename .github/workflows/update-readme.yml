@@ -12,56 +12,35 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Set up environment
-      run: |
-        export LC_ALL=C.UTF-8
-        export LANG=C.UTF-8
-
     - name: Get changed files
       id: changed-files
       uses: tj-actions/changed-files@v45
       with:
         separator: "|"
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.x'
-    
     - name: Check for changed files
       id: check-changes
       run: |
         Fichier=()
         
-        input_string='${{ steps.changed-files.outputs.all_changed_files }}'
+        input_string=$(echo "${{ steps.changed-files.outputs.all_changed_files }}" | sed 's/"/\\"/g')
         
-        python_script=$(cat << EOF
-        import sys
-        import os
-
-        input_string = sys.argv[1]
-        files = input_string.split('|')
-
-        for file in files:
-            decoded_file = file.encode('latin1').decode('utf-8')
-            if "README.md" not in decoded_file and "1er Semestre/" in decoded_file:
-                print(decoded_file)
-        EOF
-            )
-            
-            while IFS= read -r decoded_file; do
-              Fichier+=("$decoded_file")
-            done < <(python -c "$python_script" "$input_string")
-            
-            if [ ${#Fichier[@]} -gt 0 ]; then
-              echo "Tous les fichiers détectés :"
-              for f in "${Fichier[@]}"; do
-                echo "$f"
-              done
-            else
-              echo "Aucun fichier détecté."
-            fi
-          shell: /usr/bin/bash -e {0}
+        while IFS= read -r -d '|' file; do
+          decoded_file=$(printf '%b' "$file")
+          
+          if [[ "$decoded_file" != *"README.md" && "$decoded_file" == *"1er Semestre/"* ]]; then
+            Fichier+=("$decoded_file")
+          fi
+        done <<< "${input_string}|"
+        
+        if [ ${#Fichier[@]} -gt 0 ]; then
+          echo "Tous les fichiers détectés :"
+          for f in "${Fichier[@]}"; do
+            printf '%s\n' "$f"
+          fi
+        else
+          echo "Aucun fichier détecté."
+        fi
 
 
     # - name: Commit changes
