@@ -26,7 +26,7 @@ jobs:
         input_string=$(echo "${{ steps.changed-files.outputs.all_changed_files }}" | sed 's/"/\\"/g')
         
         while IFS= read -r -d '|' file; do
-          decoded_file=$(echo "$file" | sed 's/\\303\\240/à/g')
+          decoded_file=$(echo "$file" | sed 's/303240/à/g')
           
           if [[ "$decoded_file" != *"README.md" && "$decoded_file" == *"1er Semestre/"* ]]; then
             Fichier+=("$decoded_file")
