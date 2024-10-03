@@ -37,12 +37,17 @@ jobs:
           
           if [[ "$decoded_file" != *"README.md" && "$decoded_file" == *"1er Semestre/"* ]]; then
             Fichier+=("$decoded_file")
+          else
+            NonFichier+=("$decoded_file")
           fi
         done
         
         if [ ${#Fichier[@]} -gt 0 ]; then
           echo "Tous les fichiers détectés :"
           printf '%s\n' "${Fichier[@]}" 
+        elif [ ${#NonFichier[@]} -gt 0 ]; then
+          echo "Fichiers non traités :"
+          printf '%s\n' "${NonFichier[@]}"
         else
           echo "Aucun fichier détecté."
         fi
