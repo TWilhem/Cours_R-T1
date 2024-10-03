@@ -35,7 +35,7 @@ jobs:
           decoded_file=$(printf '%b' "$decoded_file")
           
           if [[ "$decoded_file" != *"README.md" && "$decoded_file" == *"1er Semestre/"* ]]; then
-            Fichier+=("$decoded_file" | sed 's/\\$//')
+            Fichier+=("$(echo "$decoded_file" | sed 's/\\$//')")
           fi
         done
         
