@@ -21,6 +21,7 @@ jobs:
     - name: Check for changed files
       id: check-changes
       run: |
+        export LC_ALL=C.UTF-8
         Fichier=()
         
         input_string=$(echo "${{ steps.changed-files.outputs.all_changed_files }}" | sed 's/"/\\"/g')
