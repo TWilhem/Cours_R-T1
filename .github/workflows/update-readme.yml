@@ -23,29 +23,45 @@ jobs:
       with:
         separator: "|"
 
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+    
     - name: Check for changed files
       id: check-changes
       run: |
         Fichier=()
         
-        input_string=$(echo "${{ steps.changed-files.outputs.all_changed_files }}" | sed 's/"/\\"/g')
+        input_string='${{ steps.changed-files.outputs.all_changed_files }}'
         
-        while IFS= read -r -d '|' file; do
-          decoded_file=$(echo -e "$file" | iconv -f UTF-8 -t ISO-8859-1 | iconv -f ISO-8859-1 -t UTF-8)
-          
-          if [[ "$decoded_file" != *"README.md" && "$decoded_file" == *"1er Semestre/"* ]]; then
-            Fichier+=("$decoded_file")
-          fi
-        done <<< "${input_string}|"
-        
-        if [ ${#Fichier[@]} -gt 0 ]; then
-          echo "Tous les fichiers détectés :"
-          for f in "${Fichier[@]}"; do
-            echo "$f"
-          done
-        else
-          echo "Aucun fichier détecté."
-        fi
+        python_script=$(cat << EOF
+        import sys
+        import os
+
+        input_string = sys.argv[1]
+        files = input_string.split('|')
+
+        for file in files:
+            decoded_file = file.encode('latin1').decode('utf-8')
+            if "README.md" not in decoded_file and "1er Semestre/" in decoded_file:
+                print(decoded_file)
+        EOF
+            )
+            
+            while IFS= read -r decoded_file; do
+              Fichier+=("$decoded_file")
+            done < <(python -c "$python_script" "$input_string")
+            
+            if [ ${#Fichier[@]} -gt 0 ]; then
+              echo "Tous les fichiers détectés :"
+              for f in "${Fichier[@]}"; do
+                echo "$f"
+              done
+            else
+              echo "Aucun fichier détecté."
+            fi
+          shell: /usr/bin/bash -e {0}
 
 
     # - name: Commit changes
