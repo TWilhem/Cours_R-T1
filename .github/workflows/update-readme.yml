@@ -47,7 +47,7 @@ jobs:
         
         if [ ${#Fichier[@]} -gt 0 ]; then
           echo "Tous les fichiers détectés :"
-          printf '%s\n' "${Fichier[@]}"
+          printf '%s\n' "${Fichier[@]}" | sed 's/\\$//'
         else
           echo "Aucun fichier détecté."
         fi
