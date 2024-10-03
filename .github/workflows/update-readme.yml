@@ -12,6 +12,11 @@ jobs:
       with:
         fetch-depth: 0
 
+    - name: Set up environment
+      run: |
+        export LC_ALL=C.UTF-8
+        export LANG=C.UTF-8
+
     - name: Get changed files
       id: changed-files
       uses: tj-actions/changed-files@v45
@@ -21,13 +26,12 @@ jobs:
     - name: Check for changed files
       id: check-changes
       run: |
-        export LC_ALL=C.UTF-8
         Fichier=()
         
-        input_string=$(echo -e "${{ steps.changed-files.outputs.all_changed_files }}" | sed 's/"/\\"/g')
+        input_string=$(echo "${{ steps.changed-files.outputs.all_changed_files }}" | sed 's/"/\\"/g')
         
         while IFS= read -r -d '|' file; do
-          decoded_file=$(printf '%b' "$file")
+          decoded_file=$(echo -e "$file" | iconv -f UTF-8 -t ISO-8859-1 | iconv -f ISO-8859-1 -t UTF-8)
           
           if [[ "$decoded_file" != *"README.md" && "$decoded_file" == *"1er Semestre/"* ]]; then
             Fichier+=("$decoded_file")
@@ -37,7 +41,7 @@ jobs:
         if [ ${#Fichier[@]} -gt 0 ]; then
           echo "Tous les fichiers détectés :"
           for f in "${Fichier[@]}"; do
-            printf '%b\n' "$f"
+            echo "$f"
           done
         else
           echo "Aucun fichier détecté."
