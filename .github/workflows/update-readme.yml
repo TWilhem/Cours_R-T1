@@ -23,11 +23,10 @@ jobs:
       run: |
         Fichier=()
         
-        input_string="${{ steps.changed-files.outputs.all_changed_files }}"
+        input_string=$"${{ steps.changed-files.outputs.all_changed_files }}"
         
         while IFS= read -r -d '|' file; do
-          # Utilisation de printf pour décoder les caractères UTF-8
-          decoded_file=$(printf '%b' "${file//%/\\x}")
+          decoded_file=$(printf '%b' "$file")
           
           if [[ "$decoded_file" != *"README.md" && "$decoded_file" == *"1er Semestre/"* ]]; then
             Fichier+=("$decoded_file")
@@ -37,12 +36,12 @@ jobs:
         if [ ${#Fichier[@]} -gt 0 ]; then
           echo "Tous les fichiers détectés :"
           for f in "${Fichier[@]}"; do
-            echo "$f"
+            printf '%s\n' "$f"
           done
         else
           echo "Aucun fichier détecté."
         fi
-        
+
 
     # - name: Commit changes
     #   if: 
