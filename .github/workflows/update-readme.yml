@@ -17,6 +17,7 @@ jobs:
       uses: tj-actions/changed-files@v45
       with:
         separator: "|"
+        escape_json: 'false'
 
     - name: Check for changed files
       id: check-changes
@@ -24,6 +25,7 @@ jobs:
         Fichier=()
         
         input_string=$"${{ steps.changed-files.outputs.all_changed_files }}"
+        echo "$input_string"
         
         while IFS= read -r -d '|' file; do
           decoded_file=$(printf '%b' "$file")
