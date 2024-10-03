@@ -22,30 +22,35 @@ jobs:
         separator: "|"
         escape_json: 'false'
 
-    - name: Check for changed files
-      id: check-changes
+    - name: Process changed files
       run: |
-        Fichier=()
-        
-        input_string=$"${{ steps.changed-files.outputs.all_changed_files }}"
-        echo "$input_string"
-        
-        while IFS= read -r -d '|' file; do
-          decoded_file=$(printf '%b' "$file")
-          
-          if [[ "$decoded_file" != *"README.md" && "$decoded_file" == *"1er Semestre/"* ]]; then
-            Fichier+=("$decoded_file")
+        echo "Changed files:"
+        IFS='|' read -ra CHANGED_FILES <<< "${{ steps.changed-files.outputs.all_changed_files }}"
+        for file in "${CHANGED_FILES[@]}"; do
+          echo "  - $file"
+        done
+
+    - name: Display file contents (example)
+      run: |
+        IFS='|' read -ra CHANGED_FILES <<< "${{ steps.changed-files.outputs.all_changed_files }}"
+        for file in "${CHANGED_FILES[@]}"; do
+          if [ -f "$file" ]; then
+            echo "Contents of $file:"
+            cat "$file"
+            echo "------------------------"
           fi
-        done <<< "${input_string}|"
-        
-        if [ ${#Fichier[@]} -gt 0 ]; then
-          echo "Tous les fichiers détectés :"
-          for f in "${Fichier[@]}"; do
-            printf '%s\n' "$f"
-          done
-        else
-          echo "Aucun fichier détecté."
-        fi
+        done
+
+    - name: Example processing with special characters
+      run: |
+        IFS='|' read -ra CHANGED_FILES <<< "${{ steps.changed-files.outputs.all_changed_files }}"
+        for file in "${CHANGED_FILES[@]}"; do
+          filename=$(basename "$file")
+          echo "Processing file: $filename"
+          # Add your processing logic here
+          # For example, you could rename the file:
+          # mv "$file" "${file}_processed"
+        done
 
 
     # - name: Commit changes
