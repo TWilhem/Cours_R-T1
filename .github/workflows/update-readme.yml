@@ -13,14 +13,17 @@ jobs:
         fetch-depth: 0
     
     - name: Configure Git encoding
-      run: git config --global core.quotePath false
+      run: |
+        git config --global core.quotePath fals
+        git config --global core.precomposeunicode true
 
     - name: Get changed files
       id: changed-files
       uses: tj-actions/changed-files@v45
       with:
-        separator: "|"
+        separator: ","
         escape_json: 'false'
+        unicode_escape: 'false'
 
     - name: Process changed files
       run: |
