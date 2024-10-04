@@ -36,6 +36,8 @@ jobs:
           decoded_file=$(printf '%b' "$decoded_file")
           
           if [[ "$decoded_file" != *"README.md" && "$decoded_file" == *"1er Semestre/"* ]]; then
+            if [ -f "$(dirname "$decoded_file")/README.md" ]; then
+              echo "il y a un fichier: $decoded_file"
             Fichier+=("$decoded_file")
           else
             NonFichier+=("$decoded_file")
@@ -44,7 +46,8 @@ jobs:
         
         if [ ${#Fichier[@]} -gt 0 ]; then
           echo "Tous les fichiers détectés :"
-          printf '%s\n' "${Fichier[@]}" 
+          printf '%s\n' "${Fichier[@]}"
+          echo "fichier_count=${#Fichier[@]}" >> $GITHUB_OUTPUT 
         else
           echo "Aucun fichier détecté."
         fi
@@ -53,7 +56,10 @@ jobs:
           echo "Fichiers non traités :"
           printf '%s\n' "${NonFichier[@]}"
         fi
-        
+
+
+
+
 
 
     # - name: Commit changes
