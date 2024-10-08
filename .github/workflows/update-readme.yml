@@ -29,7 +29,9 @@ jobs:
       id: process-files
       run: |
         declare -A FilesByDir
-
+        NonFichier=()
+        
+        IFS='|' read -ra files <<< "${{ steps.get-files.outputs.all_files }}"
         for file in "${files[@]}"; do
             if [[ "$file" =~ /(R1[0-9]{2})/ ]]; then
                 parent_dir="${BASH_REMATCH[1]}"
