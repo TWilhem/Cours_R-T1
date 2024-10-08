@@ -38,6 +38,7 @@ jobs:
           if [[ "$decoded_file" != *"README.md" && "$decoded_file" == *"1er Semestre/"* ]]; then
             if [ -f "$(dirname "$decoded_file")/README.md" ]; then
               echo "il y a un fichier: $decoded_file"
+            fi
             Fichier+=("$decoded_file")
           else
             NonFichier+=("$decoded_file")

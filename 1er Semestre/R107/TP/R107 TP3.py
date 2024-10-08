@@ -81,6 +81,6 @@ def Exercice3():
 print(10*"="+"---"+"Introduction 1"+"---"+10*"=")
 # Exercice1()
 print(10*"="+"---"+"Crible d'Eratosphène"+"---"+10*"=")
-Exercice2()
+# Exercice2()
 print(10*"="+"---"+"Décomposition en facteurs premiers"+"---"+10*"=")
 # Exercice3()
