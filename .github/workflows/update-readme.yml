@@ -26,20 +26,20 @@ jobs:
         echo "all_files<<EOF" >> $GITHUB_OUTPUT
         echo "$files" >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
-
+    
     - name: Process files
       id: process-files
       shell: bash
       run: |
         declare -A FilesByDir
-        NonFichier=()
+        NonR1Files=()
         
         while IFS= read -r file; do
           if [[ "$file" =~ /R1[0-9]{2}/ ]]; then
             parent_dir="${BASH_REMATCH[0]}"
             FilesByDir["$parent_dir"]+="$file"$'\n'
           else
-            NonFichier+=("$file")
+            NonR1Files+=("$file")
           fi
         done <<< "${{ steps.get-files.outputs.all_files }}"
         
@@ -55,9 +55,9 @@ jobs:
         
         echo "fichier_count=$total_count" >> $GITHUB_OUTPUT 
         
-        if [ ${#NonFichier[@]} -gt 0 ]; then
-          echo "Fichiers hors ./R1**/ :"
-          printf '%s\n' "${NonFichier[@]}"
+        if [ ${#NonR1Files[@]} -gt 0 ]; then
+          echo "Fichiers hors des répertoires R1** :"
+          printf '%s\n' "${NonR1Files[@]}"
         fi
 
         
