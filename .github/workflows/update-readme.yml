@@ -29,6 +29,7 @@ jobs:
 
     - name: Process files
       id: process-files
+      shell: bash
       run: |
         declare -A FilesByDir
         NonFichier=()
