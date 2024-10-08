@@ -31,23 +31,30 @@ jobs:
       id: process-files
       shell: bash
       run: |
-        declare -A FilesByDir
+        declare -A FilesByDirAndType
         NonR1Files=()
         
         while IFS= read -r file; do
-          if [[ "$file" =~ /1er\ Semestre/R1[0-9]{2}/ ]]; then
+          if [[ "$file" =~ /1er\ Semestre/R1[0-9]{2}/(CM|TD|TP)/ ]]; then
             parent_dir=$(echo "$file" | grep -oP '/1er Semestre/R1\d{2}')
-            FilesByDir["$parent_dir"]+="$file"$'\n'
+            file_type=${BASH_REMATCH[1]}
+            key="${parent_dir}/${file_type}"
+            FilesByDirAndType["$key"]+="$file"$'\n'
+          elif [[ "$file" =~ /1er\ Semestre/R1[0-9]{2}/ ]]; then
+            parent_dir=$(echo "$file" | grep -oP '/1er Semestre/R1\d{2}')
+            key="${parent_dir}/Autres"
+            FilesByDirAndType["$key"]+="$file"$'\n'
           else
             NonR1Files+=("$file")
           fi
         done <<< "${{ steps.get-files.outputs.all_files }}"
         
         total_count=0
-        for dir in "${!FilesByDir[@]}"; do
-          echo "Fichiers dans $dir :"
-          echo "${FilesByDir[$dir]}"
-          count=$(echo -n "${FilesByDir[$dir]}" | grep -c '^')
+        for key in "${!FilesByDirAndType[@]}"; do
+          IFS='/' read -r dir type <<< "$key"
+          echo "Fichiers dans $dir - $type :"
+          echo "${FilesByDirAndType[$key]}"
+          count=$(echo -n "${FilesByDirAndType[$key]}" | grep -c '^')
           total_count=$((total_count + count))
           echo ""
         done
