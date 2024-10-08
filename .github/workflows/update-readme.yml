@@ -27,7 +27,7 @@ jobs:
         echo "$files" >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
     
-    - name: Process files
+    - name: Process files and create README.md
       id: process-files
       shell: bash
       run: |
@@ -36,7 +36,7 @@ jobs:
         NonR1Files=()
         
         while IFS= read -r file; do
-          if [[ -f "$file" ]]; then  # Vérifie si le fichier existe
+          if [[ -f "$file" ]]; then
             if [[ "$file" =~ /1er\ Semestre/(R1[0-9]{2})/(CM|TD|TP)/ ]]; then
               parent_dir=${BASH_REMATCH[1]}
               file_type=${BASH_REMATCH[2]}
@@ -60,12 +60,30 @@ jobs:
             [[ -n "$current_dir" ]] && echo ""
             echo "Fichiers dans /$dir/"
             current_dir="$dir"
+            
+            # Création du fichier README.md
+            readme_path="./1er Semestre/$dir/README.md"
+            echo "# Ressources pour $dir" > "$readme_path"
+            echo "" >> "$readme_path"
+            echo "Ce répertoire contient les ressources pour le module $dir." >> "$readme_path"
+            echo "" >> "$readme_path"
+            echo "## Structure du répertoire" >> "$readme_path"
+            echo "" >> "$readme_path"
+            echo "- CM : Cours magistraux" >> "$readme_path"
+            echo "- TD : Travaux dirigés" >> "$readme_path"
+            echo "- TP : Travaux pratiques" >> "$readme_path"
+            echo "- Autres : Ressources supplémentaires" >> "$readme_path"
+            echo "" >> "$readme_path"
+            echo "## Contenu" >> "$readme_path"
+            echo "" >> "$readme_path"
           fi
-          echo "  $type:"
+          echo "  $type:" | tee -a "$readme_path"
           while IFS= read -r file; do
             echo "    $file"
+            echo "- $(basename "$file")" >> "$readme_path"
             ((total_count++))
           done <<< "${FilesByDirAndType[$key]}"
+          echo "" >> "$readme_path"
         done
         
         echo "fichier_count=$total_count" >> $GITHUB_OUTPUT 
@@ -75,7 +93,7 @@ jobs:
           printf '%s\n' "${NonR1Files[@]}"
         fi
         
-        exit 0  # Force une sortie réussie
+        exit 0
         
 
     # - name: Update README files
