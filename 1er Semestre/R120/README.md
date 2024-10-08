@@ -11,9 +11,11 @@ Ce répertoire contient les ressources pour le module R120.
 
 ## Contenu
 
-  TD:
-- R120 TD2.md
-- R120 TD3.md
-- R120 TD1.md
-- 
+### Autres:
+- [README.md](README.md)
+
+### TD:
+- [R120 TD1.md](TD/R120 TD1.md)
+- [R120 TD3.md](TD/R120 TD3.md)
+- [R120 TD2.md](TD/R120 TD2.md)
 

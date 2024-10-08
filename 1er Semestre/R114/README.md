@@ -11,17 +11,18 @@ Ce répertoire contient les ressources pour le module R114.
 
 ## Contenu
 
-  CM:
-- README.md
-- Documentation Routeur SAE21.pdf
-- 
+### Autres:
+- [README.md](README.md)
 
-  TD:
-- README.md
-- Introduction à la SAE15.pdf
-- 
+### CM:
+- [Documentation Routeur SAE21.pdf](CM/Documentation Routeur SAE21.pdf)
+- [README.md](CM/README.md)
 
-  TP:
-- COURS Gestion de projet cascade ETU.pdf
-- 
+### TD:
+- [README.md](TD/README.md)
+- [Introduction à la SAE15.pdf](TD/Introduction à la SAE15.pdf)
+
+### TP:
+- [COURS Gestion de projet cascade ETU.pdf](TP/COURS Gestion de projet cascade ETU.pdf)
+
 
