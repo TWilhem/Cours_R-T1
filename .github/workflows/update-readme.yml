@@ -35,7 +35,7 @@ jobs:
         for file in "${files[@]}"; do
           if [[ "$file" =~ /R1[0-9]{2}/ ]]; then
             parent_dir="${BASH_REMATCH[1]}"
-            FilesByDir["$parent_dir"]+="$file"
+            FilesByDir["$parent_dir"]+="$file "
           else
             NonFichier+=("$file")
           fi
