@@ -1,6 +1,13 @@
 name: Update Files
 
-on: [push]
+# on:
+#   schedule:
+#     - cron: '0 12 * * 5'
+
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   update_files:
@@ -12,45 +19,39 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Get changed files
-      id: changed-files
-      uses: tj-actions/changed-files@v45
-      with:
-        separator: "|"
+    - name: Get all files in 1er Semestre
+      id: get-files
+      run: |
+        files=$(find ./1er\ Semestre -type f | tr '\n' '|')
+        echo "all_files=${files%|}" >> $GITHUB_OUTPUT
 
-    - name: Check for changed files
-      id: check-changes
+    - name: Process files
+      id: process-files
       run: |
         Fichier=()
+        NonFichier=()
         
-        input_string=$(echo "${{ steps.changed-files.outputs.all_changed_files }}")
-        
-        decode_special_chars() {
-          local decoded=$(echo "$1" | sed 's/303240/à/g; s/303250/è/g; s/303251/é/g; s/303252/ê/g; s/303256/î/g; s/303264/ô/g; s/303271/ù/g')
-          echo "$decoded" | sed 's/\\$//'
-        }
-
-        IFS='|' read -ra files <<< "$input_string"
+        IFS='|' read -ra files <<< "${{ steps.get-files.outputs.all_files }}"
         for file in "${files[@]}"; do
-          decoded_file=$(decode_special_chars "$file")
-          decoded_file=$(printf '%b' "$decoded_file")
-          
-          if [[ "$decoded_file" != *"README.md" && "$decoded_file" == *"1er Semestre/"* ]]; then
-            if [ -f "$(dirname "$decoded_file")/README.md" ]; then
-              echo "il y a un fichier: $decoded_file"
+          if [[ "$file" != *"README.md" ]]; then
+            if [ -f "$(dirname "$file")/README.md" ]; then
+              echo "Fichier traité: $file"
+              Fichier+=("$file")
+            else
+              echo "Pas de README.md dans le dossier parent: $file"
+              NonFichier+=("$file")
             fi
-            Fichier+=("$decoded_file")
           else
-            NonFichier+=("$decoded_file")
+            NonFichier+=("$file")
           fi
         done
         
         if [ ${#Fichier[@]} -gt 0 ]; then
-          echo "Tous les fichiers détectés :"
+          echo "Tous les fichiers à traiter :"
           printf '%s\n' "${Fichier[@]}"
           echo "fichier_count=${#Fichier[@]}" >> $GITHUB_OUTPUT 
         else
-          echo "Aucun fichier détecté."
+          echo "Aucun fichier à traiter."
         fi
         
         if [ ${#NonFichier[@]} -gt 0 ]; then
@@ -58,22 +59,42 @@ jobs:
           printf '%s\n' "${NonFichier[@]}"
         fi
 
-
-
-
-
+    - name: Update README files
+      if: steps.process-files.outputs.fichier_count > 0
+      run: |
+        update_readme() {
+          local file="$1"
+          local readme_file="$(dirname "$file")/README.md"
+          local filename=$(basename "$file")
+          local file_type=""
+          
+          if [[ "$filename" == CM* ]]; then
+            file_type="CM"
+          elif [[ "$filename" == TD* ]]; then
+            file_type="TD"
+          elif [[ "$filename" == TP* ]]; then
+            file_type="TP"
+          else
+            file_type="Autre"
+          fi
+          
+          if [ -f "$readme_file" ]; then
+            sed -i "/^## $file_type$/a - [$filename](./$filename)" "$readme_file"
+          fi
+        }
+        
+        IFS='|' read -ra files <<< "${{ steps.get-files.outputs.all_files }}"
+        for file in "${files[@]}"; do
+          if [[ "$file" != *"README.md" ]]; then
+            update_readme "$file"
+          fi
+        done
 
     # - name: Commit changes
-    #   if: 
+    #   if: steps.process-files.outputs.fichier_count > 0
     #   run: |
     #     git config --local user.email "action@github.com"
     #     git config --local user.name "GitHub Action"
     #     git add .
-    #     git diff --quiet && git diff --staged --quiet || git commit -m "Mise à jour automatique des fichiers (hors README)"
+    #     git diff --quiet && git diff --staged --quiet || git commit -m "Mise à jour automatique des fichiers README"
     #     git push
-
-
-# Ajout du fait qu'il n'execute pas si les premier dossier ne sont pas dans 1er semestre, etc
-# Faire une boucle pour traiter les fichiers
-# verifier si il y a bien un fichier README dans le dossier parent
-# mettre le lien dans la bonne ligne (CM, TD, TP)
