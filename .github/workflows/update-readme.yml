@@ -28,26 +28,31 @@ jobs:
     - name: Process files
       id: process-files
       run: |
-        Fichier=()
+        declare -A FilesByDir
         NonFichier=()
         
         IFS='|' read -ra files <<< "${{ steps.get-files.outputs.all_files }}"
         for file in "${files[@]}"; do
-          parent_dir=
-          if [[ "$file" =~ /R1[0-9]{2}/ ]]; then
-            Fichier+=("$file")
+          if [[ "$file" =~ (.*\/R1[0-9]{2}\/) ]]; then
+            parent_dir="${BASH_REMATCH[1]}"
+            FilesByDir["$parent_dir"]+="$file "
           else
             NonFichier+=("$file")
           fi
         done
         
-        if [ ${#Fichier[@]} -gt 0 ]; then
-          echo "Fichiers dans ./R1**/ :"
-          printf '%s\n' "${Fichier[@]}"
-          echo "fichier_count=${#Fichier[@]}" >> $GITHUB_OUTPUT 
-        else
-          echo "Aucun fichier dans ./R1**/ ."
-        fi
+        total_count=0
+        for dir in "${!FilesByDir[@]}"; do
+          echo "Fichiers dans $dir :"
+          IFS=' ' read -ra dir_files <<< "${FilesByDir[$dir]}"
+          for file in "${dir_files[@]}"; do
+            echo "  $file"
+            ((total_count++))
+          done
+          echo ""
+        done
+        
+        echo "fichier_count=$total_count" >> $GITHUB_OUTPUT 
         
         if [ ${#NonFichier[@]} -gt 0 ]; then
           echo "Fichiers hors ./R1**/ :"
