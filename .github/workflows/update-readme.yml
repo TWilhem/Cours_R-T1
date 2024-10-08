@@ -93,7 +93,7 @@ jobs:
           printf '%s\n' "${NonR1Files[@]}"
         fi
         
-        exit 0
+
         
 
     # - name: Update README files
