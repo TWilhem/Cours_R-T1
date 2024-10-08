@@ -33,29 +33,27 @@ jobs:
         
         IFS='|' read -ra files <<< "${{ steps.get-files.outputs.all_files }}"
         for file in "${files[@]}"; do
-          if [[ "$file" != *"README.md" ]]; then
-            if [ -f "$(dirname "$(dirname "$file")")/README.md" ]; then
-              Fichier+=("$file")
-            else
-              NonFichier+=("$file")
-            fi
+          if [[ "$file" =~ ^\.\/R1[0-9]{2}\/ ]]; then
+            Fichier+=("$file")
           else
             NonFichier+=("$file")
           fi
         done
         
         if [ ${#Fichier[@]} -gt 0 ]; then
-          echo "Tous les fichiers à traiter :"
+          echo "Fichiers dans ./R1**/ :"
           printf '%s\n' "${Fichier[@]}"
           echo "fichier_count=${#Fichier[@]}" >> $GITHUB_OUTPUT 
         else
-          echo "Aucun fichier à traiter."
+          echo "Aucun fichier dans ./R1**/ ."
         fi
         
         if [ ${#NonFichier[@]} -gt 0 ]; then
-          echo "Fichiers non traités :"
+          echo "Fichiers hors ./R1**/ :"
           printf '%s\n' "${NonFichier[@]}"
         fi
+
+        
 
     # - name: Update README files
     #   if: steps.process-files.outputs.fichier_count > 0
