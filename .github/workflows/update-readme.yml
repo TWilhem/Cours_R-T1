@@ -34,11 +34,9 @@ jobs:
         IFS='|' read -ra files <<< "${{ steps.get-files.outputs.all_files }}"
         for file in "${files[@]}"; do
           if [[ "$file" != *"README.md" ]]; then
-            if [ -f "$(dirname "$file")/README.md" ]; then
-              echo "Fichier traité: $file"
+            if [ -f "$(dirname "$(dirname "$file")")/README.md" ]; then
               Fichier+=("$file")
             else
-              echo "Pas de README.md dans le dossier parent: $file"
               NonFichier+=("$file")
             fi
           else
@@ -59,36 +57,36 @@ jobs:
           printf '%s\n' "${NonFichier[@]}"
         fi
 
-    - name: Update README files
-      if: steps.process-files.outputs.fichier_count > 0
-      run: |
-        update_readme() {
-          local file="$1"
-          local readme_file="$(dirname "$file")/README.md"
-          local filename=$(basename "$file")
-          local file_type=""
+    # - name: Update README files
+    #   if: steps.process-files.outputs.fichier_count > 0
+    #   run: |
+    #     update_readme() {
+    #       local file="$1"
+    #       local readme_file="$(dirname "$file")/README.md"
+    #       local filename=$(basename "$file")
+    #       local file_type=""
           
-          if [[ "$filename" == CM* ]]; then
-            file_type="CM"
-          elif [[ "$filename" == TD* ]]; then
-            file_type="TD"
-          elif [[ "$filename" == TP* ]]; then
-            file_type="TP"
-          else
-            file_type="Autre"
-          fi
+    #       if [[ "$filename" == CM* ]]; then
+    #         file_type="CM"
+    #       elif [[ "$filename" == TD* ]]; then
+    #         file_type="TD"
+    #       elif [[ "$filename" == TP* ]]; then
+    #         file_type="TP"
+    #       else
+    #         file_type="Autre"
+    #       fi
           
-          if [ -f "$readme_file" ]; then
-            sed -i "/^## $file_type$/a - [$filename](./$filename)" "$readme_file"
-          fi
-        }
+    #       if [ -f "$readme_file" ]; then
+    #         sed -i "/^## $file_type$/a - [$filename](./$filename)" "$readme_file"
+    #       fi
+    #     }
         
-        IFS='|' read -ra files <<< "${{ steps.get-files.outputs.all_files }}"
-        for file in "${files[@]}"; do
-          if [[ "$file" != *"README.md" ]]; then
-            update_readme "$file"
-          fi
-        done
+    #     IFS='|' read -ra files <<< "${{ steps.get-files.outputs.all_files }}"
+    #     for file in "${files[@]}"; do
+    #       if [[ "$file" != *"README.md" ]]; then
+    #         update_readme "$file"
+    #       fi
+    #     done
 
     # - name: Commit changes
     #   if: steps.process-files.outputs.fichier_count > 0
