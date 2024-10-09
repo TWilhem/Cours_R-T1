@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+# on:
+#   schedule:
+#     - cron: '0 12 * * 5'
+
 jobs:
   update_files:
     runs-on: ubuntu-latest
@@ -31,6 +35,7 @@ jobs:
         set +e  # Désactive la sortie immédiate en cas d'erreur
         
         declare -A FilesByDirAndType
+        declare -A ImageDirsByDirAndType
         NonR1Files=()
         
         while IFS= read -r file; do
@@ -38,10 +43,20 @@ jobs:
             if [[ "$file" =~ /1er\ Semestre/(R1[0-9]{2})/(CM|TD|TP)/ ]]; then
               parent_dir=${BASH_REMATCH[1]}
               file_type=${BASH_REMATCH[2]}
-              FilesByDirAndType["$parent_dir,$file_type"]+="$file"$'\n'
+              if [[ "$file" =~ /image/ ]]; then
+                image_dir=$(dirname "$file")
+                ImageDirsByDirAndType["$parent_dir,$file_type"]+="$image_dir"$'\n'
+              else
+                FilesByDirAndType["$parent_dir,$file_type"]+="$file"$'\n'
+              fi
             elif [[ "$file" =~ /1er\ Semestre/(R1[0-9]{2})/ ]]; then
               parent_dir=${BASH_REMATCH[1]}
-              FilesByDirAndType["$parent_dir,Autres"]+="$file"$'\n'
+              if [[ "$file" =~ /image/ ]]; then
+                image_dir=$(dirname "$file")
+                ImageDirsByDirAndType["$parent_dir,Autres"]+="$image_dir"$'\n'
+              else
+                FilesByDirAndType["$parent_dir,Autres"]+="$file"$'\n'
+              fi
             else
               NonR1Files+=("$file")
             fi
@@ -52,34 +67,36 @@ jobs:
         
         total_count=0
         current_dir=""
-        for key in $(echo "${!FilesByDirAndType[@]}" | tr ' ' '\n' | sort); do
+        for key in $(echo "${!FilesByDirAndType[@]} ${!ImageDirsByDirAndType[@]}" | tr ' ' '\n' | sort -u); do
           IFS=',' read -r dir type <<< "$key"
           if [[ "$dir" != "$current_dir" ]]; then
             [[ -n "$current_dir" ]] && echo "" >> "./1er Semestre/$current_dir/README.md"
-            echo "# Ressources pour $dir" > "./1er Semestre/$dir/README.md"
-            echo "" >> "./1er Semestre/$dir/README.md"
-            echo "Ce répertoire contient les ressources pour le module $dir." >> "./1er Semestre/$dir/README.md"
-            echo "" >> "./1er Semestre/$dir/README.md"
-            echo "## Structure du répertoire" >> "./1er Semestre/$dir/README.md"
-            echo "" >> "./1er Semestre/$dir/README.md"
-            echo "- CM : Cours magistraux" >> "./1er Semestre/$dir/README.md"
-            echo "- TD : Travaux dirigés" >> "./1er Semestre/$dir/README.md"
-            echo "- TP : Travaux pratiques" >> "./1er Semestre/$dir/README.md"
-            echo "- Autres : Ressources supplémentaires" >> "./1er Semestre/$dir/README.md"
-            echo "" >> "./1er Semestre/$dir/README.md"
-            echo "## Contenu" >> "./1er Semestre/$dir/README.md"
+            echo "# Cours R&T1" > "./1er Semestre/$dir/README.md"
+            echo "## Premier Semestre" >> "./1er Semestre/$dir/README.md"
+            echo "### Ressources pour $dir" >> "./1er Semestre/$dir/README.md"
+            echo "### Contenu" >> "./1er Semestre/$dir/README.md"
             echo "" >> "./1er Semestre/$dir/README.md"
             current_dir="$dir"
           fi
-          echo "### $type:" >> "./1er Semestre/$dir/README.md"
+          echo "#### $type:" >> "./1er Semestre/$dir/README.md"
+          # Traitement des fichiers normaux
           while IFS= read -r file; do
             if [[ -n "$file" ]]; then
               filename=$(basename "$file")
               relative_path=$(realpath --relative-to="./1er Semestre/$dir" "$file")
-              echo "- [$filename]($relative_path)" >> "./1er Semestre/$dir/README.md"
+              echo "- [$filename](./$relative_path)" >> "./1er Semestre/$dir/README.md"
               ((total_count++))
             fi
           done <<< "${FilesByDirAndType[$key]}"
+          # Traitement des dossiers d'images
+          while IFS= read -r image_dir; do
+            if [[ -n "$image_dir" ]]; then
+              dirname=$(basename "$image_dir")
+              relative_path=$(realpath --relative-to="./1er Semestre/$dir" "$image_dir")
+              echo "- [$dirname (Dossier d'images)](./$relative_path)" >> "./1er Semestre/$dir/README.md"
+              ((total_count++))
+            fi
+          done <<< "$(echo "${ImageDirsByDirAndType[$key]}" | sort -u)"
           echo "" >> "./1er Semestre/$dir/README.md"
         done
         
