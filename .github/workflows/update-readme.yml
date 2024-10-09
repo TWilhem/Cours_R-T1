@@ -83,7 +83,7 @@ jobs:
             if [[ -n "$file" ]]; then
               filename=$(basename "$file")
               relative_path=$(realpath --relative-to="./1er Semestre/$dir" "$file")
-              echo "- [$filename](./$relative_path)" >> "./1er Semestre/$dir/README.md"
+              echo "- [$filename](<./$relative_path>)" >> "./1er Semestre/$dir/README.md"
               ((total_count++))
             fi
           done <<< "${FilesByDirAndType[$key]}"
@@ -92,7 +92,7 @@ jobs:
             if [[ -n "$image_dir" ]]; then
               dirname=$(basename "$image_dir")
               relative_path=$(realpath --relative-to="./1er Semestre/$dir" "$image_dir")
-              echo "- [$dirname (Dossier d'images)](./$relative_path)" >> "./1er Semestre/$dir/README.md"
+              echo "- [$dirname (Dossier d'images)](<./$relative_path>)" >> "./1er Semestre/$dir/README.md"
               ((total_count++))
             fi
           done <<< "$(echo "${ImageDirsByDirAndType[$key]}" | sort -u)"
