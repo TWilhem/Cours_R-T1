@@ -1,21 +1,13 @@
-# Ressources pour R120
+# Cours R&T1
+## Premier Semestre
+### Ressources pour R120
+### Contenu
 
-Ce répertoire contient les ressources pour le module R120.
+#### Autres:
+- [README.md](./README.md)
 
-## Structure du répertoire
-
-- CM : Cours magistraux
-- TD : Travaux dirigés
-- TP : Travaux pratiques
-- Autres : Ressources supplémentaires
-
-## Contenu
-
-### Autres:
-- [README.md](README.md)
-
-### TD:
-- [R120 TD1.md](TD/R120 TD1.md)
-- [R120 TD3.md](TD/R120 TD3.md)
-- [R120 TD2.md](TD/R120 TD2.md)
+#### TD:
+- [R120 TD2.md](./TD/R120 TD2.md)
+- [R120 TD3.md](./TD/R120 TD3.md)
+- [R120 TD1.md](./TD/R120 TD1.md)
 

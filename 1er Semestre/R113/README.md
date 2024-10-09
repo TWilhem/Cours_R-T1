@@ -1,20 +1,12 @@
-# Ressources pour R113
+# Cours R&T1
+## Premier Semestre
+### Ressources pour R113
+### Contenu
 
-Ce répertoire contient les ressources pour le module R113.
+#### Autres:
+- [README.md](./README.md)
 
-## Structure du répertoire
-
-- CM : Cours magistraux
-- TD : Travaux dirigés
-- TP : Travaux pratiques
-- Autres : Ressources supplémentaires
-
-## Contenu
-
-### Autres:
-- [README.md](README.md)
-
-### TP:
-- [R113 TP1.md](TP/R113 TP1.md)
+#### TP:
+- [R113 TP1.md](./TP/R113 TP1.md)
 
 
