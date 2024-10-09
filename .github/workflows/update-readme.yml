@@ -1,13 +1,8 @@
 name: Update Files
 
 on:
-  push:
-    branches:
-      - main
-
-# on:
-#   schedule:
-#     - cron: '0 12 * * 5'
+  schedule:
+    - cron: '0 12 * * 5'
 
 jobs:
   update_files:
