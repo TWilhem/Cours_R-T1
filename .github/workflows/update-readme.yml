@@ -31,7 +31,6 @@ jobs:
       id: process-files
       shell: bash
       run: |
-        set -x  # Active le mode de débogage
         set +e  # Désactive la sortie immédiate en cas d'erreur
         
         declare -A FilesByDirAndType
