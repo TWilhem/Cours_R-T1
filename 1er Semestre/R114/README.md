@@ -3,6 +3,9 @@
 ### Ressources pour R114
 ### Contenu
 
+#### Autres:
+- [README.md](./README.md)
+
 #### CM:
 - [README.md](./CM/README.md)
 
