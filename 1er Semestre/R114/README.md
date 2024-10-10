@@ -4,6 +4,6 @@
 ### Contenu
 
 #### Autres:
-- [README.md](<./README.md>)
+- [README](<./README>)
 
 

@@ -4,12 +4,12 @@
 ### Contenu
 
 #### Autres:
-- [README.md](<./README.md>)
+- [README](<./README>)
 
 #### TD:
-- [R106 TD3.md](<./TD/R106 TD3.md>)
-- [R106 TD4.md](<./TD/R106 TD4.md>)
-- [R106 TD1.md](<./TD/R106 TD1.md>)
-- [R106 TD2.md](<./TD/R106 TD2.md>)
+- [R106 TD3](<./TD/R106 TD3>)
+- [R106 TD4](<./TD/R106 TD4>)
+- [R106 TD1](<./TD/R106 TD1>)
+- [R106 TD2](<./TD/R106 TD2>)
 
 
