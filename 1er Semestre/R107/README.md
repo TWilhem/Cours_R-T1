@@ -4,7 +4,7 @@
 ### Contenu
 
 #### Autres:
-- [README](<./README>)
+- [README.md](<./README>)
 
 #### CM:
 - [R107 -1er.txt](<./CM/R107 -1er.txt>)
