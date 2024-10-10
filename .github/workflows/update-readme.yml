@@ -82,6 +82,11 @@ jobs:
             if [[ -n "$file" ]]; then
               filename=$(basename "$file")
               relative_path=$(realpath --relative-to="./1er Semestre/$dir" "$file")
+              # Supprimer l'extension .md si le fichier est un fichier Markdown
+              if [[ "$filename" == *.md ]]; then
+                filename="${filename%.md}"
+                relative_path="${relative_path%.md}"
+              fi
               echo "- [$filename](<./$relative_path>)" >> "./1er Semestre/$dir/README.md"
               ((total_count++))
             fi
