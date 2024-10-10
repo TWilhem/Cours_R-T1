@@ -4,9 +4,9 @@
 ### Contenu
 
 #### Autres:
-- [README](<./README>)
+- [README.md](<./README>)
 
 #### TP:
-- [R113 TP1](<./TP/R113 TP1>)
+- [R113 TP1.md](<./TP/R113 TP1>)
 
 
