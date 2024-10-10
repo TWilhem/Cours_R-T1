@@ -3,7 +3,9 @@ name: Update Files
 on:
   schedule:
     - cron: '0 12 * * 5'
-
+  push:
+    branches: [main]
+    
 jobs:
   update_files:
     runs-on: ubuntu-latest
