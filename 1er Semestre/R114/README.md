@@ -6,7 +6,4 @@
 #### Autres:
 - [README.md](<./README.md>)
 
-#### CM:
-- [README.md](<./CM/README.md>)
-
 
